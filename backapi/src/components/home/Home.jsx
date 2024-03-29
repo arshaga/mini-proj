@@ -7,8 +7,6 @@ export const Home =(props)=>{
     const [newdata,setNewdata]=useState()
     const{getUserList,putUserList}= userUserServices()
 
-
-
     useEffect(()=>{
         getdata()
     },[submit])
@@ -39,10 +37,12 @@ export const Home =(props)=>{
 
                 </thead>
                 <tbody>
-                {newdata.map((user, index) => (
+                {newdata.map((data, index) => (
             <tr key={index}>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
+            
+              <td> <div>{data.username}</div></td>
+
+              <td><div>{data.email}</div></td>
             </tr>
           ))}
 
