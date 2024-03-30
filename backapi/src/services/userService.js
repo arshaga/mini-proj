@@ -12,7 +12,7 @@ import axiosPrivate from "../url/userAxios";
         .post('/login',data)
         return response.data
     }
-    const getUserlist = async (data)=>{
+    const getUserList = async (data)=>{
         const response = await axiosPrivate
         .get('/getuser',data)
         return response.data
@@ -21,7 +21,7 @@ import axiosPrivate from "../url/userAxios";
 return{
     registerUser,
     loginUser,
-    getUserlist
+    getUserList
   
 }
  }

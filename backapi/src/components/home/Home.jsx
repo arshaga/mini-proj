@@ -2,20 +2,38 @@ import React, { useEffect, useState } from "react";
 import { userUserServices } from "../../services/userService";
 
 export const Home =(props)=>{
-    const {submit} = props
+    const {submit,params} = props
 
-    const [newdata,setNewdata]=useState()
+    const [newdata,setNewdata]=useState([])
+    const [userList,setUserList]=useState([])
     const{getUserList,putUserList}= userUserServices()
 
     useEffect(()=>{
-        getdata()
-    },[submit])
+        let tempList = userList
+        if(params != 'all'&& params){
+            tempList =userList.filter(data=>{
+            return data.status == params;
+            });
+        }
+        setNewdata(tempList)
+    },[params,userList])
     
-    const getdata = async ()=>{
+
+
+    useEffect(()=>{
+        getData();
+    },[submit]);
+
+   
+
+    
+    const getData = async ()=>{
         try{
+        
             const response = await  getUserList()
             if(response.success)
-            setNewdata(response.data)
+            setUserList(response.data)
+            console.log(response.data)
 
         }catch(err){
 
@@ -23,31 +41,37 @@ export const Home =(props)=>{
     }
 
 
-
     return(
-        <div className="table-container">
-            <div className="table-list">
-                <h2>Profile</h2>
-                <thead>
-                    <tr>
-                        <th width="500">Username</th>
-                        <th width="500">Email</th>
-                        <th width="500">Address</th>
-                    </tr>
+            <div className="table-container">
+                    <h2>Profile</h2>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th width="500">Username</th>
+                            <th width="500">Email</th>
+                            <th width="500">Address</th>
+                        </tr>
 
-                </thead>
-                <tbody>
-                {newdata.map((data, index) => (
-            <tr key={index}>
+                    </thead>
+                     <tbody>
+                    {newdata?.length>0 ?
+
+                    newdata.map((data, index) => (
+                <tr key={index}>
+                
+                <td> <div>{data.username}</div></td>
+
+                <td><div>{data.email}</div></td>
+                </tr>
+            ))
+            :<tr><td colSpan={5} className="fs-5 text-center">
+            <div className="td-data">No User Found</div></td></tr>
+            }
+
+                    </tbody> 
+                    
             
-              <td> <div>{data.username}</div></td>
-
-              <td><div>{data.email}</div></td>
-            </tr>
-          ))}
-
-                </tbody>
+                </table>
             </div>
-        </div>
-    )
-}
+        )
+    }
